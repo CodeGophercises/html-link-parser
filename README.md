@@ -5,8 +5,8 @@ The package exports the API `Parse`, which inputs an HTML byte slice.
 This package extracts all the links ( including nested ones ) and returns them in the form of 
 ```
 {
-  href: <LinkHref>
-  text: <Text inside link>
+  Href: <LinkHref>
+  Text: <Text inside link>
 }
 ```
 
