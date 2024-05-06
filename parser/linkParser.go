@@ -2,9 +2,8 @@ package parser
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
-	"log"
-	"os"
 	"strings"
 
 	"golang.org/x/net/html"
@@ -20,18 +19,17 @@ func formatLink(link Link) {
 	fmt.Printf("Text: %s\n\n", strings.TrimSpace(link.text))
 }
 
-func Parse(filename string) {
+// Result Set
+var links []Link
+
+// Assuming html is UTF-8 encoded html input
+func Parse(htmlData []byte) ([]Link, error) {
 	//  The idea is that we will parse the HTML data into syntax tree. We can use a parser for this or write our own. Will just use one
 	// for now. Then traverse that tree with DFS and process any target NODES.
 
-	htmlData, err := os.ReadFile(filename)
-	if err != nil {
-		log.Fatalf("error reading html file %s", filename)
-	}
-
 	rootNode, err := html.Parse(bytes.NewReader(htmlData))
 	if err != nil {
-		log.Fatalf("error while parsing the html file into syntax tree")
+		return nil, errors.New("error while parsing the html file into syntax tree")
 	}
 
 	// At this point, we have a syntax tree for the HTML doc. We just to walk it in a way efficient for our purpose.
@@ -71,9 +69,11 @@ func Parse(filename string) {
 				}
 			}
 			link.text = string(*childTextContainer)
-			formatLink(link)
+			// Append link to resultSet
+			links = append(links, link)
 		}
 	}
 	var childTextContainer []byte
 	dfs(rootNode, false, &childTextContainer)
+	return links, nil
 }
