@@ -1,8 +1,7 @@
-package main
+package parser
 
 import (
 	"bytes"
-	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -16,24 +15,18 @@ type Link struct {
 	text string
 }
 
-var html_file = flag.String("html", "", "the html file to extract data from")
-
 func formatLink(link Link) {
 	fmt.Printf("Href: %s\n", link.href)
 	fmt.Printf("Text: %s\n\n", strings.TrimSpace(link.text))
 }
 
-func main() {
-	flag.Parse()
+func Parse(filename string) {
 	//  The idea is that we will parse the HTML data into syntax tree. We can use a parser for this or write our own. Will just use one
 	// for now. Then traverse that tree with DFS and process any target NODES.
-	if *html_file == "" {
-		log.Fatalf("Provide a html file to parse.")
-	}
 
-	htmlData, err := os.ReadFile(*html_file)
+	htmlData, err := os.ReadFile(filename)
 	if err != nil {
-		log.Fatalf("error reading html file %s", *html_file)
+		log.Fatalf("error reading html file %s", filename)
 	}
 
 	rootNode, err := html.Parse(bytes.NewReader(htmlData))
