@@ -1,8 +1,8 @@
 To use the parser, import `github.com/CodeGophercises/html-link-parser/parser`
 
-The package exports the API `Parse`, which inputs an HTML filename.
+The package exports the API `Parse`, which inputs an HTML byte slice.
 
-This package extracts all the links ( including nested ones ) and prints them out in the form of 
+This package extracts all the links ( including nested ones ) and returns them in the form of 
 ```
 {
   href: <LinkHref>
