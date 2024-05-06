@@ -10,13 +10,13 @@ import (
 )
 
 type Link struct {
-	href string
-	text string
+	Href string
+	Text string
 }
 
 func formatLink(link Link) {
-	fmt.Printf("Href: %s\n", link.href)
-	fmt.Printf("Text: %s\n\n", strings.TrimSpace(link.text))
+	fmt.Printf("Href: %s\n", link.Href)
+	fmt.Printf("Text: %s\n\n", strings.TrimSpace(link.Text))
 }
 
 // Result Set
@@ -64,11 +64,11 @@ func Parse(htmlData []byte) ([]Link, error) {
 			link := Link{}
 			for _, attr := range n.Attr {
 				if attr.Key == "href" {
-					link.href = attr.Val
+					link.Href = attr.Val
 					break
 				}
 			}
-			link.text = string(*childTextContainer)
+			link.Text = string(*childTextContainer)
 			// Append link to resultSet
 			links = append(links, link)
 		}
